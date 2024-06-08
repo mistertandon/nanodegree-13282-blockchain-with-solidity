@@ -6,18 +6,26 @@ contract EventTicketing {
         string attendeeName;
         uint ticketId;
         bool isUsed;
+        uint timestamp;
         // TODO: Add timestamp to track when the ticket was purchased
     }
 
     string public eventName;
     uint public totalTicketsSold;
     uint public maxTickets;
+    uint public startTime;
+    uint public endTime;
     mapping(uint => Ticket) public ticketsSold;
-    event TicketPurchased(uint ticketId, string attendeeName);
+    event TicketPurchased(uint ticketId, string attendeeName, uint timestamp);
 
     // TODO: Add start and end times variables for ticket sales
 
     // TODO: Initialize a constructor with start and end times for ticket sales
+    constructor(uint _startTime, uint _endTime){
+        require(_startTime > _endTime, "Invalid ticket selling window period.");
+        startTime = _startTime;
+        endTime = _endTime;
+    }
 
     function setEventDetails(string memory _eventName, uint _maxTickets) public {
         require(bytes(_eventName).length > 0, "Event name cannot be empty");
@@ -29,12 +37,13 @@ contract EventTicketing {
     function purchaseTicket(string memory attendeeName) public {
         // TODO: Modify function to respect the ticket sales period
         require(totalTicketsSold < maxTickets, "All tickets have been sold");
+        require(block.timestamp >= startTime &&  block.timestamp <= endTime, "Ticket selling window has been closed.");
         uint ticketId = totalTicketsSold + 1;
         // TODO: Include Ticket purchase timestamp
-        ticketsSold[ticketId] = Ticket(attendeeName, ticketId, false);
+        ticketsSold[ticketId] = Ticket(attendeeName, ticketId, false, block.timestamp);
         totalTicketsSold += 1;
         // TODO: Emit event with timestamp
-        emit TicketPurchased(ticketId, attendeeName);
+        emit TicketPurchased(ticketId, attendeeName, block.timestamp);
     }
 
     function useTicket(uint ticketId) public {
