@@ -2,9 +2,10 @@
 pragma solidity ^0.8.19;
 
 // TODO: Import the Ownable library from OpenZeppelin
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 // TODO: Extend the EventTicketing contract with the Ownable contract from OpenZeppelin
-contract EventTicketing {
+contract EventTicketing is Ownable {
     struct Ticket {
         string attendeeName;
         uint ticketId;
@@ -29,14 +30,14 @@ contract EventTicketing {
 
 
     // TODO: Modify the constructor to pass an initialOwner address to the Ownable constructor
-    constructor(uint _startTime, uint _endTime) {
+    constructor(uint _startTime, uint _endTime, address initialOwner) Ownable(initialOwner) {
         require(_endTime > _startTime, "End time must be after start time.");
         startTime = _startTime;
         endTime = _endTime;
     }
 
     // TODO: Add the onlyOwner modifier to restrict this function to the owner of the contract
-    function setEventDetails(string memory _eventName, uint _maxTickets) public {
+    function setEventDetails(string memory _eventName, uint _maxTickets) public onlyOwner{
         require(bytes(_eventName).length > 0, "Event name cannot be empty.");
         require(_maxTickets > 0, "There should be at least one ticket.");
         eventName = _eventName;
