@@ -35,3 +35,8 @@ Each `lesson` folder contains an `exercises` folder. This `exercises` folder sho
 ### Project Folder
 
 The `project` folder should contain all files and instructions necessary for setup. If possible, a set of instructions should be provided for both Udacity workspaces and a way to work locally (for both MacOS and Windows OS). At a minimum, one set of instructions should be provided. A `README` template has been provided in the project folder. This template layout should be used to write your README.
+
+
+D:\git_blockchain_repo\nanodegree-13282-blockchain-with-solidity\lesson-3-going-to-production\exercises\starter\
+
+> npx hardhat run scripts/deploy.js --network sepolia-testnet
